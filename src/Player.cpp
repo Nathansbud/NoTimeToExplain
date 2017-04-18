@@ -10,13 +10,18 @@
 
 Player::Player()
 {
-  iFlags = iFlags | Sword;
+  
 }
 
 Player::~Player()
 {
 
 }
+
+//void Player::Update()
+//{
+//  
+//}
 
 void Player::SetFlags(Items item)
 {

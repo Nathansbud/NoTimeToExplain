@@ -5,16 +5,23 @@ string mentor = "[o_o]>";
 string player = "[*-*]";
 string pedo = "-v-";
 string shopkeeper = "OwO"; //"
-string dialog[] = {"There's no time to explain", "It's dangerous out there right now. Take this."};
-string sword = "-|->";
-string swordMentor = "[o_o]> -|->";
+string dialog[] = {"There's no time to explain", "It's dangerous out there right now. Take this" /*Sword*/, "It will serve you well. Try not to cut yourself on it...it's sharp!", "I hear them coming, but I'm not finished yet.", "You'll need one of these, too" /* Shield */, "They near. I'll hold them off. Go, run, get out of here...unless...did you get all that?"};
+
+string shield = "[-]";
+string sword = "-|=>";
+string swordMentor = "[o_o]> -|=>";
+string shieldMentor = "[o_o]> [-]";
 
 string pressSpace = "Press Space to Continue";
 
 string text;
 
-static int currentLine;
+string *mentorSprite = &mentor;
+
 static int position;
+
+static int currentLine;
+
 
 bool swordAnim;
 
@@ -25,7 +32,7 @@ void ofApp::setup()
 
 void ofApp::update()
 {
-
+ 
 }
 
 void ofApp::draw()
@@ -36,7 +43,7 @@ void ofApp::draw()
   
   CheckFlagEvents();
   
-  ofDrawBitmapString(mentor, ofGetWidth()/2 - 100, ofGetHeight()/1.5);
+  ofDrawBitmapString(*mentorSprite, ofGetWidth()/2 - 100, ofGetHeight()/1.5);
   
   if(text.length() == 0)
   {
@@ -47,12 +54,13 @@ void ofApp::draw()
   {
 	text.push_back(dialog[currentLine][position]);
 	position++;
-  } else if(position == dialog[currentLine].length())
+  }
+  if(position == dialog[currentLine].length())
   {
 	text.push_back(']');
 	position++;
   }
-  
+	
   ofDrawBitmapString(text, ofGetWidth()/2, ofGetHeight()/2);
   
   ofDrawBitmapString(pressSpace, ofGetWidth()/2, ofGetHeight() - 100);
@@ -63,13 +71,15 @@ void ofApp::keyPressed(int key)
   switch(key)
   {
 	case ' ':
-	  if(currentLine < 1)
+	  if(position == dialog[currentLine].length())
 	  {
-		currentLine++;
-		text.clear();
-		position = 0;
-	  }
-	  
+		if(currentLine < 5)
+		{
+		  currentLine++;
+		  text.clear();
+		  position = 0;
+		}
+	  } else if (position < dialog[currentLine.length()))
 	  break;
 	case OF_KEY_TAB:
 	  {
@@ -90,7 +100,32 @@ void ofApp::keyReleased(int key)
 
 void ofApp::CheckFlagEvents()
 {
+  //Set Flags
+  switch(currentLine)
+  {
+	case 1:
+	  p->SetFlags(Player::Sword);
+	  break;
+	case 5:
+	  p->SetFlags(Player::Shield);
+	  break;
+  }
+  
+  if(p->GetFlags() & Player::Sword && (currentLine == 1 || currentLine == 2)) //Change Mentor Sprite
+  {
+	  mentorSprite = &swordMentor;
+  } else
+  {
+	mentorSprite = &mentor;
+  }
+  
+ 
 
+  //Give Sword "Animation"
+  if(p->GetFlags() & Player::Shield && currentLine == 5) //Change Mentor Sprite to Shield
+  {
+	mentorSprite = &shieldMentor;
+  }
 }
 
 ////void ofApp::mouseMoved(int x, int y ){

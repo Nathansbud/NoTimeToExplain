@@ -18,6 +18,7 @@ class Player
 	Player();
 	~Player();
 	int GetFlags() {return iFlags;}
+	
 	enum Items
 	{
 	  Sword = 1,
@@ -27,7 +28,10 @@ class Player
 	  Potion = 16,
 	  Bomb = 32
 	};
+	
 	void SetFlags(Items item);
+
+//	void Update();
 	
   private:
 	int iFlags;

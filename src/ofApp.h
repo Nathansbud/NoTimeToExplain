@@ -21,15 +21,7 @@ class ofApp : public ofBaseApp{
 		void keyPressed(int key);
 		void keyReleased(int key);
 		
-		enum Items
-		{
-		  Sword = 1,
-		  Shield = 2,
-		  Bow = 4,
-		  Staff = 8,
-		  Potion = 16,
-		  Bomb = 32
-		};
-		
 		void Parse();
+		
+		void SwordAcquired();
 };

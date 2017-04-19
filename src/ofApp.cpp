@@ -47,7 +47,7 @@ void ofApp::setup()
 
 void ofApp::update()
 {
- 
+ p->Inventory();
 }
 
 void ofApp::draw()
@@ -113,7 +113,9 @@ void ofApp::keyPressed(int key)
   case 'n':
 	if(currentLine == 7)
 	{
-	  currentLine == 0;
+	  currentLine = 0;
+	  text.clear();
+	  position = 0;
 	}
 	break;
   case 'Y':
@@ -153,7 +155,7 @@ void ofApp::CheckFlagEvents()
   
   if(p->GetFlags() & Player::Sword && (currentLine == 1 || currentLine == 2)) //Change Mentor Sprite
   {
-	  mentorSprite = &swordMentor;
+	mentorSprite = &swordMentor;
   }
   //Give Sword "Animation"
   if(p->GetFlags() & Player::Shield && currentLine == 4) //Change Mentor Sprite to Shield
@@ -161,7 +163,7 @@ void ofApp::CheckFlagEvents()
 	mentorSprite = &shieldMentor;
   }
   
-  if(currentLine == 5)
+  if(currentLine >= 5 && currentLine <= 7)
   {
 	mentorSprite = &bowWieldMentor;
   }

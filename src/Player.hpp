@@ -19,17 +19,24 @@ class Player
 	~Player();
 	int GetFlags() {return iFlags;}
 	
-	enum Items
+	enum Items //ul = unsigned long
 	{
-	  Sword = 1,
-	  Shield = 2,
-	  Bow = 4,
-	  Staff = 8,
-	  Potion = 16,
-	  Bomb = 32
+	  Sword = 1 << 0,
+	  Shield = 1 << 1,
+	  Bow = 1 << 2,
+	  Staff = 1 << 3,
+	  Potion = 1 << 4,
+	  Bomb = 1 << 5, 
+	  Spell = 1 << 6,
+	  Food = 1 << 7,
+	  Knife = 1 << 8
 	};
 	
 	void SetFlags(Items item);
+	void RemoveFlags(Items item);
+	bool CheckFlags(Items item);
+	
+	void Inventory();
 
 //	void Update();
 	

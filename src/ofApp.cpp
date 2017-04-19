@@ -1,5 +1,5 @@
 #include "ofApp.h"
-using namespace std;
+#include <fstream>
 
 string mentor = "[o_o]>";
 string player = "[*-*]";
@@ -11,6 +11,12 @@ string shield = "[-]";
 string sword = "-|=>";
 string swordMentor = "[o_o]> -|=>";
 string shieldMentor = "[o_o]> [-]";
+
+string bowWieldMentor = "<(-<[o_o]";
+
+ifstream ntte;
+
+vector<string> storyline;
 
 string pressSpace = "Press Space to Continue";
 
@@ -27,7 +33,16 @@ bool swordAnim;
 
 void ofApp::setup()
 {
-
+  string line;
+  ntte.open("/Users/zachamiton/GitHub/NoTimeToExplain/bin/data/NoTimeToExplain.txt");
+  if (!ntte) {
+    cout << "Unable to open file datafile.txt" << endl;
+  }
+  
+  while(getline(ntte, line))
+  {
+	storyline.push_back(line);
+  }
 }
 
 void ofApp::update()
@@ -37,6 +52,7 @@ void ofApp::update()
 
 void ofApp::draw()
 {
+  cout << currentLine << endl;
   ofBackground(0);
   ofFill();
   ofSetColor(255);
@@ -50,12 +66,12 @@ void ofApp::draw()
 	text.push_back('[');
   }
 
-  if(position < dialog[currentLine].length())
+  if(position < storyline.at(currentLine).length())
   {
-	text.push_back(dialog[currentLine][position]);
+	text.push_back(storyline.at(currentLine)[position]);
 	position++;
   }
-  if(position == dialog[currentLine].length())
+  if(position == storyline.at(currentLine).length())
   {
 	text.push_back(']');
 	position++;
@@ -71,15 +87,20 @@ void ofApp::keyPressed(int key)
   switch(key)
   {
 	case ' ':
-	  if(position == dialog[currentLine].length())
+	  if(currentLine < storyline.size() && currentLine != 7)
 	  {
-		if(currentLine < 5)
+		if(position < storyline.at(currentLine).length())
+		{
+		  text = '[' + storyline.at(currentLine);
+		  position = storyline.at(currentLine).length();
+		  break;
+		} else
 		{
 		  currentLine++;
 		  text.clear();
 		  position = 0;
 		}
-	  } else if (position < dialog[currentLine.length()))
+	  }
 	  break;
 	case OF_KEY_TAB:
 	  {
@@ -88,25 +109,44 @@ void ofApp::keyPressed(int key)
 		position = 0;
 	  }
 	  break;
-	  
+  case 'N':
+  case 'n':
+	if(currentLine == 7)
+	{
+	  currentLine == 0;
+	}
+	break;
+  case 'Y':
+  case 'y':
+	if(currentLine == 7)
+	{
+	  currentLine++;
+	  text.clear();
+	  position = 0;
+	}
+	break;
+	
+  
+  
+  
   }
 }
 
 void ofApp::keyReleased(int key)
 {
   
-
 }
 
 void ofApp::CheckFlagEvents()
 {
+  mentorSprite = &mentor;
   //Set Flags
   switch(currentLine)
   {
 	case 1:
 	  p->SetFlags(Player::Sword);
 	  break;
-	case 5:
+	case 4:
 	  p->SetFlags(Player::Shield);
 	  break;
   }
@@ -114,57 +154,21 @@ void ofApp::CheckFlagEvents()
   if(p->GetFlags() & Player::Sword && (currentLine == 1 || currentLine == 2)) //Change Mentor Sprite
   {
 	  mentorSprite = &swordMentor;
-  } else
-  {
-	mentorSprite = &mentor;
   }
-  
- 
-
   //Give Sword "Animation"
-  if(p->GetFlags() & Player::Shield && currentLine == 5) //Change Mentor Sprite to Shield
+  if(p->GetFlags() & Player::Shield && currentLine == 4) //Change Mentor Sprite to Shield
   {
 	mentorSprite = &shieldMentor;
   }
+  
+  if(currentLine == 5)
+  {
+	mentorSprite = &bowWieldMentor;
+  }
 }
 
-////void ofApp::mouseMoved(int x, int y ){
-//
+//void ofApp::Parse()
+//{
+//  
 //}
-//
-////void ofApp::mouseDragged(int x, int y, int button){
-//
-//}
-//
-////void ofApp::mousePressed(int x, int y, int button){
-//
-//}
-//
-////void ofApp::mouseReleased(int x, int y, int button){
-//
-//}
-//
-////void ofApp::mouseEntered(int x, int y){
-//
-//}
-//
-////void ofApp::mouseExited(int x, int y){
-//
-//}
-//
-////void ofApp::windowResized(int w, int h){
-//
-//}
-//
-////void ofApp::gotMessage(ofMessage msg){
-//
-//}
-//
-////void ofApp::dragEvent(ofDragInfo dragInfo){ 
-//
-//}
-//
-//
-//
-//
-//
+
